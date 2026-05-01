@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>blog | hackrVT</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+      background: #0d0d0d;
+      color: #e0e0e0;
+      padding: 2rem 1.5rem;
+      max-width: 720px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    a { color: #7eb8f7; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    nav { margin-bottom: 2rem; font-size: 0.85rem; color: #666; }
+    nav a { color: #666; }
+    nav a:hover { color: #aaa; }
+    #app { min-height: 4rem; }
+
+    /* List view */
+    .blog-heading { font-size: 1.6rem; margin-bottom: 1.5rem; }
+    .post-list { list-style: none; }
+    .post-list li + li { border-top: 1px solid #1e1e1e; }
+    .post-link { display: block; padding: 1rem 0; }
+    .post-title { font-size: 1rem; font-weight: bold; color: #e0e0e0; }
+    .post-desc { margin-top: 0.3rem; color: #888; font-size: 0.875rem; }
+    .post-date { margin-top: 0.25rem; color: #555; font-size: 0.8rem; }
+    .post-link:hover .post-title { color: #7eb8f7; }
+    .post-link:hover { text-decoration: none; }
+
+    /* Post view */
+    .back-link { display: inline-block; margin-bottom: 2rem; font-size: 0.85rem; color: #666; }
+    .back-link:hover { color: #aaa; text-decoration: none; }
+    .post-content { line-height: 1.75; }
+    .post-content h1 { font-size: 1.5rem; margin: 2rem 0 1rem; }
+    .post-content h2 { font-size: 1.25rem; margin: 1.75rem 0 0.75rem; }
+    .post-content h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; }
+    .post-content p { margin-bottom: 1rem; }
+    .post-content ul, .post-content ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    .post-content li { margin-bottom: 0.25rem; }
+    .post-content pre { margin: 1.25rem 0; border-radius: 6px; overflow-x: auto; }
+    .post-content code:not(pre code) {
+      background: #1a1a1a;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+      font-size: 0.875em;
+    }
+    .post-content blockquote {
+      border-left: 3px solid #333;
+      padding-left: 1rem;
+      color: #888;
+      margin: 1rem 0;
+    }
+    .post-content a { color: #7eb8f7; }
+    .post-content hr { border: none; border-top: 1px solid #1e1e1e; margin: 2rem 0; }
+
+    /* States */
+    .status { color: #666; font-size: 0.875rem; margin-top: 1rem; }
+    .error { color: #f87171; font-size: 0.875rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <nav><a href="/" data-nav>← hackrVT</a></nav>
+  <div id="app"><p class="status">Loading...</p></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    const app = document.getElementById('app');
+    const API = 'https://api.hackrvt.xyz';
+    const FILES = 'https://files.hackrvt.xyz';
+
+    // Client-side router
+    function route() {
+      const path = window.location.pathname.replace(/\/$/, '') || '/blog';
+      const blogBase = '/blog';
+      if (path === blogBase) {
+        showList();
+      } else if (path.startsWith(blogBase + '/')) {
+        const id = path.slice(blogBase.length + 1);
+        showPost(id);
+      } else {
+        showList();
+      }
+    }
+
+    function navigate(url) {
+      history.pushState({}, '', url);
+      route();
+    }
+
+    // Delegate nav clicks to pushState
+    document.addEventListener('click', e => {
+      const link = e.target.closest('a[data-nav]');
+      if (!link) return;
+      e.preventDefault();
+      navigate(link.getAttribute('href'));
+    });
+
+    window.addEventListener('popstate', route);
+    document.addEventListener('DOMContentLoaded', route);
+
+    // Escape user-provided strings before inserting into HTML
+    function esc(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function formatDate(raw) {
+      if (!raw) return '';
+      const d = new Date(raw);
+      if (isNaN(d)) return '';
+      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    async function showList() {
+      app.innerHTML = '<p class="status">Loading posts...</p>';
+      try {
+        const res = await fetch(`${API}/blogs`);
+        if (!res.ok) throw new Error(`${res.status}`);
+        const posts = await res.json();
+
+        if (!Array.isArray(posts) || posts.length === 0) {
+          app.innerHTML = '<h1 class="blog-heading">blog</h1><p class="status">No posts yet.</p>';
+          return;
+        }
+
+        const items = posts.map(post => {
+          const date = formatDate(post.date ?? post.created_at ?? post.published_at);
+          return `<li>
+            <a class="post-link" href="/blog/${esc(post.id)}" data-nav>
+              <div class="post-title">${esc(post.title)}</div>
+              ${post.description ? `<div class="post-desc">${esc(post.description)}</div>` : ''}
+              ${date ? `<div class="post-date">${date}</div>` : ''}
+            </a>
+          </li>`;
+        }).join('');
+
+        app.innerHTML = `<h1 class="blog-heading">blog</h1><ul class="post-list">${items}</ul>`;
+      } catch (err) {
+        app.innerHTML = `<h1 class="blog-heading">blog</h1><p class="error">Couldn't load posts — try again later.</p>`;
+        console.error('showList:', err);
+      }
+    }
+
+    async function showPost(id) {
+      app.innerHTML = '<p class="status">Loading...</p>';
+      try {
+        const res = await fetch(`${FILES}/blogs/${encodeURIComponent(id)}.md`);
+        if (!res.ok) throw new Error(`${res.status}`);
+        const md = await res.text();
+        const html = marked.parse(md);
+        app.innerHTML = `
+          <a class="back-link" href="/blog" data-nav>← back</a>
+          <div class="post-content">${html}</div>
+        `;
+        app.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
+      } catch (err) {
+        app.innerHTML = `
+          <a class="back-link" href="/blog" data-nav>← back</a>
+          <p class="error">Couldn't load this post. It may not exist.</p>
+        `;
+        console.error('showPost:', err);
+      }
+    }
+  </script>
+</body>
+</html>
