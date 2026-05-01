@@ -71,6 +71,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
   <script>
     const app = document.getElementById('app');
     const API = 'https://api.hackrvt.xyz';
@@ -86,12 +87,17 @@
         const id = path.slice(blogBase.length + 1);
         showPost(id);
       } else {
+        console.warn('Unexpected path, falling back to list:', path);
         showList();
       }
     }
 
     function navigate(url) {
-      history.pushState({}, '', url);
+      try {
+        const parsed = new URL(url, location.origin);
+        if (parsed.origin !== location.origin) { location.href = url; return; }
+        history.pushState({}, '', parsed.pathname + parsed.search + parsed.hash);
+      } catch { location.href = url; return; }
       route();
     }
 
@@ -153,12 +159,19 @@
     }
 
     async function showPost(id) {
+      if (!/^[a-zA-Z0-9_-]+$/.test(id)) {
+        app.innerHTML = `
+          <a class="back-link" href="/blog" data-nav>← back</a>
+          <p class="error">Couldn't load this post. It may not exist.</p>
+        `;
+        return;
+      }
       app.innerHTML = '<p class="status">Loading...</p>';
       try {
         const res = await fetch(`${FILES}/blogs/${encodeURIComponent(id)}.md`);
         if (!res.ok) throw new Error(`${res.status}`);
         const md = await res.text();
-        const html = marked.parse(md);
+        const html = DOMPurify.sanitize(marked.parse(md));
         app.innerHTML = `
           <a class="back-link" href="/blog" data-nav>← back</a>
           <div class="post-content">${html}</div>
