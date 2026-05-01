@@ -133,7 +133,8 @@
       try {
         const res = await fetch(`${API}/blogs`);
         if (!res.ok) throw new Error(`${res.status}`);
-        const posts = await res.json();
+        const data = await res.json();
+        const posts = data.blogs ?? data;
 
         if (!Array.isArray(posts) || posts.length === 0) {
           app.innerHTML = '<h1 class="blog-heading">blog</h1><p class="status">No posts yet.</p>';
