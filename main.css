@@ -16,3 +16,9 @@ a:hover {
 h1 {
     text-align: center;
 }
+
+.subtext {
+    text-align: left;
+    font-size: 10px;
+    color: #929292;
+}
