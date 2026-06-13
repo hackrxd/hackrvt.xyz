@@ -1,0 +1,1 @@
+location.replace("https://discord.gg/zNMFyQWCnh");
