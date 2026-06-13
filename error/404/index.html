@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oh no! | hackrVT</title>
+    <style>
+        body {
+    font-family: 'Google Sans Flex', sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    text-align: center;
+}
+
+a {
+    color: rgb(0, 183, 255);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    text-align: center;
+}
+    </style>
+</head>
+<body>
+    <h1>well, this is awkward.</h1>
+    <p>the page you requested does not exist. if you got here from an officially posted link, please <a href="mailto:hackr@hackrvt.xyz">tell me PLEASE I NEED TO KNOW HELP</a>.</p>
+    <p id="fuckyou"></p>
+</body>
+<script>
+    if (location.pathname === "/error/404/") {
+        document.getElementById("fuckyou").innerText = "oh you little shit";
+    }
+</script>
+</html>
