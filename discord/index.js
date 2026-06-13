@@ -1,1 +1,1 @@
-location.replace("https://discord.gg/zNMFyQWCnh");
+location.href("https://discord.gg/zNMFyQWCnh");
