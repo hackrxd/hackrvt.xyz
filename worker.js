@@ -7,4 +7,21 @@ export default {
     }
     return env.ASSETS.fetch(request);
   },
+  
 };
+addEventListener("fetch", event => {
+  event.respondWith(handleRequest(event.request));
+});
+
+async function handleRequest(request) {
+  const response = await fetch(request);
+
+  // if the page was not found
+  if (response.status === 404) {
+    // we return our custom 404 page
+    return await fetch("https://hackrvt.xyz/error/404/");
+  }
+
+  // otherwise we return the original response
+  return response;
+}
