@@ -60,6 +60,36 @@
     .post-content a { color: #7eb8f7; }
     .post-content hr { border: none; border-top: 1px solid #1e1e1e; margin: 2rem 0; }
 
+    /* GFM alerts — > [!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION] */
+.gfm-alert {
+  border-left: 3px solid;
+  padding: 0.75rem 1rem;
+  margin: 1.25rem 0;
+  border-radius: 0 4px 4px 0;
+  background: rgba(255, 255, 255, 0.03);
+}
+.gfm-alert-title {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.gfm-alert-body > :last-child { margin-bottom: 0; }
+.gfm-alert-note      { border-color: #3b82f6; }
+.gfm-alert-note      .gfm-alert-title { color: #3b82f6; }
+.gfm-alert-tip       { border-color: #22c55e; }
+.gfm-alert-tip       .gfm-alert-title { color: #22c55e; }
+.gfm-alert-important { border-color: #a855f7; }
+.gfm-alert-important .gfm-alert-title { color: #a855f7; }
+.gfm-alert-warning   { border-color: #f59e0b; }
+.gfm-alert-warning   .gfm-alert-title { color: #f59e0b; }
+.gfm-alert-caution   { border-color: #ef4444; }
+.gfm-alert-caution   .gfm-alert-title { color: #ef4444; }
+
     /* States */
     .status { color: #666; font-size: 0.875rem; margin-top: 1rem; }
     .error { color: #f87171; font-size: 0.875rem; margin-top: 1rem; }
@@ -158,6 +188,29 @@
         console.error('showList:', err);
       }
     }
+
+    const ALERTS = {
+  NOTE:      { label: 'Note',      icon: 'ℹ'  },
+  TIP:       { label: 'Tip',       icon: '💡' },
+  IMPORTANT: { label: 'Important', icon: '❗' },
+  WARNING:   { label: 'Warning',   icon: '⚠'  },
+  CAUTION:   { label: 'Caution',   icon: '🚫' },
+};
+
+function applyAlerts(html) {
+  return html.replace(
+    /<blockquote>\n?<p>\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\][ \t]?\n?([\s\S]*?)<\/p>([\s\S]*?)<\/blockquote>/gi,
+    (_, type, firstPara, rest) => {
+      const t = type.toUpperCase();
+      const { label, icon } = ALERTS[t];
+      const body = (firstPara.trim() ? `<p>${firstPara.trim()}</p>` : '') + rest;
+      return `<div class="gfm-alert gfm-alert-${t.toLowerCase()}">` +
+               `<div class="gfm-alert-title"><span>${icon}</span>${label}</div>` +
+               `<div class="gfm-alert-body">${body}</div>` +
+             `</div>`;
+    }
+  );
+}
 
     async function showPost(id) {
       if (!/^[a-zA-Z0-9_-]+$/.test(id)) {
