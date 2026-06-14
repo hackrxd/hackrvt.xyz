@@ -225,7 +225,7 @@ function applyAlerts(html) {
         const res = await fetch(`${FILES}/blogs/${encodeURIComponent(id)}.md`);
         if (!res.ok) throw new Error(`${res.status}`);
         const md = await res.text();
-        const html = DOMPurify.sanitize(marked.parse(md));
+        const html = DOMPurify.sanitize(applyAlerts(marked.parse(md)));
         app.innerHTML = `
           <a class="back-link" href="/blog" data-nav>← back</a>
           <div class="post-content">${html}</div>
