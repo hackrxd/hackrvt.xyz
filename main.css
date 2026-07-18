@@ -1,33 +1,236 @@
-body {
-    font-family: 'Google Sans Flex', sans-serif;
-    background-color: #000000;
-    color: #ffffff;
+/* hackrvt.xyz — late-night desktop
+   palette: purple-cast dark, violet + peach accents
+   type: Silkscreen (display, sparingly) / Atkinson Hyperlegible (body) */
+
+:root {
+    --bg: #100c16;
+    --panel: #1a1424;
+    --border: #2e2440;
+    --text: #eae4f2;
+    --muted: #9c90b0;
+    --violet: #b18aff;
+    --peach: #ffb46b;
 }
 
-a {
-    color: rgb(0, 183, 255);
+* {
+    box-sizing: border-box;
+}
+
+html {
+    background-color: var(--bg);
+}
+
+body {
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 4rem;
+    line-height: 1.7;
+    font-size: 1.0625rem;
+}
+
+::selection {
+    background: var(--violet);
+    color: var(--bg);
+}
+
+/* ---- header: the site is its own 88x31 button ---- */
+
+.site-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px dashed var(--border);
+}
+
+.site-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 31px;
+    flex: none;
+    font-family: 'Silkscreen', monospace;
+    font-size: 11px;
+    letter-spacing: 0;
+    color: var(--bg);
+    background: var(--violet);
+    box-shadow: inset 0 0 0 2px var(--bg), 0 0 0 1px var(--violet);
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
+.site-badge:hover,
+.site-badge:focus-visible {
+    background: var(--peach);
+    box-shadow: inset 0 0 0 2px var(--bg), 0 0 0 1px var(--peach);
+    text-decoration: none;
+}
+
+.site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.site-nav a {
+    font-family: 'Silkscreen', monospace;
+    font-size: 10px;
+    padding: 7px 10px 5px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    text-decoration: none;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+    color: var(--bg);
+    background: var(--violet);
+    border-color: var(--violet);
+    text-decoration: none;
+}
+
+/* ---- type ---- */
+
+h1, h2 {
+    font-family: 'Silkscreen', monospace;
+    font-weight: 400;
+    line-height: 1.3;
 }
 
 h1 {
-    text-align: center;
+    font-size: 1.5rem;
+    margin: 0 0 1.25rem;
+}
+
+h1::after {
+    content: "_";
+    color: var(--peach);
+    animation: blink 1.2s steps(1) infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+h2 {
+    font-size: 1rem;
+    color: var(--violet);
+    margin: 2.5rem 0 0.75rem;
+}
+
+h3 {
+    font-size: 1.0625rem;
+    margin: 1.75rem 0 0.5rem;
+}
+
+h3::before {
+    content: "▸ ";
+    color: var(--peach);
+}
+
+p {
+    margin: 0 0 0.875rem;
+}
+
+strong {
+    color: var(--peach);
+}
+
+a {
+    color: var(--violet);
+    text-decoration: underline;
+    text-decoration-color: rgba(177, 138, 255, 0.35);
+    text-underline-offset: 3px;
+}
+
+a:hover {
+    text-decoration-color: var(--violet);
+}
+
+:focus-visible {
+    outline: 2px solid var(--peach);
+    outline-offset: 2px;
+}
+
+ul, ol {
+    margin: 0 0 0.875rem;
+    padding-left: 1.5rem;
+}
+
+li::marker {
+    color: var(--peach);
 }
 
 .subtext {
     text-align: left;
-    font-size: 10px;
-    color: #929292;
+    font-size: 0.8125rem;
+    color: var(--muted);
 }
+
+/* ---- 88x31 button wall (/elsewhere) ---- */
 
 .button-container {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 20px;
+    gap: 10px;
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border: 1px dashed var(--border);
+    background: var(--panel);
+}
+
+.button-container img {
+    display: block;
+    width: 88px;
+    height: 31px;
+    image-rendering: pixelated;
+}
+
+.button-container a {
+    display: block;
+    line-height: 0;
+}
+
+.button-container a:hover img,
+.button-container a:focus-visible img {
+    outline: 1px solid var(--violet);
+    outline-offset: 2px;
+}
+
+/* ---- footer ---- */
+
+.site-footer {
+    margin-top: 3.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px dashed var(--border);
+    font-size: 0.8125rem;
+    color: var(--muted);
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    h1::after {
+        animation: none;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 1rem;
+        padding-top: 1rem;
+    }
+
+    h1 {
+        font-size: 1.25rem;
+    }
 }
