@@ -6,12 +6,18 @@
     <title>Oh no! | hackrVT</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;1,400&family=Silkscreen&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600..700&display=swap" rel="stylesheet">
     <style>
+        html {
+            min-height: 100%;
+            background:
+                radial-gradient(70rem 42rem at 50% -12rem, rgba(177, 138, 255, 0.13), transparent 65%),
+                #131020;
+        }
+
         body {
             font-family: 'Atkinson Hyperlegible', sans-serif;
-            background-color: #100c16;
-            color: #eae4f2;
+            color: #efeafa;
             text-align: center;
             max-width: 42rem;
             margin: 0 auto;
@@ -21,39 +27,26 @@
         }
 
         ::selection {
-            background: #b18aff;
-            color: #100c16;
+            background: #ffc08a;
+            color: #131020;
         }
 
         a {
-            color: #b18aff;
+            color: #c0a6ff;
             text-decoration: underline;
-            text-decoration-color: rgba(177, 138, 255, 0.35);
+            text-decoration-color: rgba(192, 166, 255, 0.35);
             text-underline-offset: 3px;
         }
 
         a:hover {
-            text-decoration-color: #b18aff;
+            text-decoration-color: #ffc08a;
         }
 
         h1 {
-            font-family: 'Silkscreen', monospace;
-            font-weight: 400;
-            font-size: 1.5rem;
-        }
-
-        h1::after {
-            content: "_";
-            color: #ffb46b;
-            animation: blink 1.2s steps(1) infinite;
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            h1::after { animation: none; }
+            font-family: 'Bricolage Grotesque', 'Atkinson Hyperlegible', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            letter-spacing: -0.015em;
         }
     </style>
 </head>

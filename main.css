@@ -1,15 +1,16 @@
-/* hackrvt.xyz — late-night desktop
-   palette: purple-cast dark, violet + peach accents
-   type: Silkscreen (display, sparingly) / Atkinson Hyperlegible (body) */
+/* hackrvt.xyz — late-night purple, done softly
+   palette: deep plum night sky, lavender + peach
+   type: Bricolage Grotesque (headings) / Atkinson Hyperlegible (body)
+         Silkscreen lives only inside the 88x31 badge */
 
 :root {
-    --bg: #100c16;
-    --panel: #1a1424;
-    --border: #2e2440;
-    --text: #eae4f2;
-    --muted: #9c90b0;
-    --violet: #b18aff;
-    --peach: #ffb46b;
+    --bg: #131020;
+    --panel: #1c1730;
+    --border: #322a4a;
+    --text: #efeafa;
+    --muted: #a89cc4;
+    --lavender: #c0a6ff;
+    --peach: #ffc08a;
 }
 
 * {
@@ -17,22 +18,40 @@
 }
 
 html {
-    background-color: var(--bg);
+    min-height: 100%;
+    background:
+        radial-gradient(70rem 42rem at 50% -12rem, rgba(177, 138, 255, 0.13), transparent 65%),
+        var(--bg);
 }
 
 body {
     font-family: 'Atkinson Hyperlegible', sans-serif;
-    background-color: var(--bg);
     color: var(--text);
     max-width: 42rem;
     margin: 0 auto;
-    padding: 1.5rem 1.25rem 4rem;
+    padding: 1.75rem 1.25rem 4rem;
     line-height: 1.7;
     font-size: 1.0625rem;
 }
 
+/* a few faint stars, high in the sky */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(1px 1px at 12% 8%, rgba(255, 255, 255, 0.55), transparent 100%),
+        radial-gradient(1px 1px at 31% 17%, rgba(255, 255, 255, 0.3), transparent 100%),
+        radial-gradient(1.5px 1.5px at 47% 6%, rgba(255, 240, 220, 0.45), transparent 100%),
+        radial-gradient(1px 1px at 63% 21%, rgba(255, 255, 255, 0.25), transparent 100%),
+        radial-gradient(1px 1px at 78% 11%, rgba(255, 255, 255, 0.4), transparent 100%),
+        radial-gradient(1.5px 1.5px at 90% 26%, rgba(192, 166, 255, 0.35), transparent 100%),
+        radial-gradient(1px 1px at 22% 33%, rgba(255, 255, 255, 0.18), transparent 100%);
+}
+
 ::selection {
-    background: var(--violet);
+    background: var(--peach);
     color: var(--bg);
 }
 
@@ -43,10 +62,11 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 0.75rem;
+    gap: 0.75rem 1rem;
     padding-bottom: 1.25rem;
-    margin-bottom: 2.5rem;
-    border-bottom: 1px dashed var(--border);
+    margin-bottom: 2.75rem;
+    border-bottom: 1px solid;
+    border-image: linear-gradient(to right, var(--border), rgba(50, 42, 74, 0)) 1;
 }
 
 .site-badge {
@@ -58,80 +78,75 @@ body {
     flex: none;
     font-family: 'Silkscreen', monospace;
     font-size: 11px;
-    letter-spacing: 0;
-    color: var(--bg);
-    background: var(--violet);
-    box-shadow: inset 0 0 0 2px var(--bg), 0 0 0 1px var(--violet);
+    color: #f7f2ff;
+    text-shadow: 1px 1px 0 rgba(20, 10, 45, 0.55);
+    background: linear-gradient(180deg, #9d78ec 0%, #7452c4 100%);
+    border: 2px solid;
+    border-color: #d3bdff #3c2b6e #3c2b6e #d3bdff;
     text-decoration: none;
 }
 
 .site-badge:hover,
 .site-badge:focus-visible {
-    background: var(--peach);
-    box-shadow: inset 0 0 0 2px var(--bg), 0 0 0 1px var(--peach);
-    text-decoration: none;
+    background: linear-gradient(180deg, #ab8bf2 0%, #7f5cd2 100%);
+}
+
+.site-badge:active {
+    border-color: #3c2b6e #d3bdff #d3bdff #3c2b6e;
+    background: linear-gradient(180deg, #7452c4 0%, #9d78ec 100%);
+    transform: translate(1px, 1px);
 }
 
 .site-nav {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 1.25rem;
 }
 
 .site-nav a {
-    font-family: 'Silkscreen', monospace;
-    font-size: 10px;
-    padding: 7px 10px 5px;
-    border: 1px solid var(--border);
     color: var(--muted);
     text-decoration: none;
+    text-underline-offset: 4px;
 }
 
 .site-nav a:hover,
 .site-nav a:focus-visible {
-    color: var(--bg);
-    background: var(--violet);
-    border-color: var(--violet);
-    text-decoration: none;
+    color: var(--peach);
+    text-decoration: underline;
+    text-decoration-color: var(--peach);
+}
+
+.site-nav a[aria-current="page"] {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--lavender);
 }
 
 /* ---- type ---- */
 
-h1, h2 {
-    font-family: 'Silkscreen', monospace;
-    font-weight: 400;
-    line-height: 1.3;
+h1, h2, h3 {
+    font-family: 'Bricolage Grotesque', 'Atkinson Hyperlegible', sans-serif;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
 }
 
 h1 {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    font-weight: 700;
     margin: 0 0 1.25rem;
 }
 
-h1::after {
-    content: "_";
-    color: var(--peach);
-    animation: blink 1.2s steps(1) infinite;
-}
-
-@keyframes blink {
-    50% { opacity: 0; }
-}
-
 h2 {
-    font-size: 1rem;
-    color: var(--violet);
-    margin: 2.5rem 0 0.75rem;
+    font-size: 1.375rem;
+    font-weight: 600;
+    margin: 2.75rem 0 0.75rem;
 }
 
 h3 {
-    font-size: 1.0625rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--lavender);
     margin: 1.75rem 0 0.5rem;
-}
-
-h3::before {
-    content: "▸ ";
-    color: var(--peach);
 }
 
 p {
@@ -143,14 +158,14 @@ strong {
 }
 
 a {
-    color: var(--violet);
+    color: var(--lavender);
     text-decoration: underline;
-    text-decoration-color: rgba(177, 138, 255, 0.35);
+    text-decoration-color: rgba(192, 166, 255, 0.35);
     text-underline-offset: 3px;
 }
 
 a:hover {
-    text-decoration-color: var(--violet);
+    text-decoration-color: var(--peach);
 }
 
 :focus-visible {
@@ -164,7 +179,7 @@ ul, ol {
 }
 
 li::marker {
-    color: var(--peach);
+    color: var(--muted);
 }
 
 .subtext {
@@ -179,11 +194,13 @@ li::marker {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     margin-top: 1.5rem;
-    padding: 1.25rem;
-    border: 1px dashed var(--border);
-    background: var(--panel);
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: linear-gradient(180deg, #201a36 0%, var(--panel) 100%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .button-container img {
@@ -196,11 +213,17 @@ li::marker {
 .button-container a {
     display: block;
     line-height: 0;
+    transition: transform 120ms ease;
+}
+
+.button-container a:hover,
+.button-container a:focus-visible {
+    transform: translateY(-2px);
 }
 
 .button-container a:hover img,
 .button-container a:focus-visible img {
-    outline: 1px solid var(--violet);
+    outline: 1px solid var(--lavender);
     outline-offset: 2px;
 }
 
@@ -209,7 +232,8 @@ li::marker {
 .site-footer {
     margin-top: 3.5rem;
     padding-top: 1.25rem;
-    border-top: 1px dashed var(--border);
+    border-top: 1px solid;
+    border-image: linear-gradient(to right, var(--border), rgba(50, 42, 74, 0)) 1;
     font-size: 0.8125rem;
     color: var(--muted);
 }
@@ -219,18 +243,22 @@ li::marker {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    h1::after {
-        animation: none;
+    .button-container a {
+        transition: none;
     }
 }
 
 @media (max-width: 480px) {
     body {
         font-size: 1rem;
-        padding-top: 1rem;
+        padding-top: 1.25rem;
     }
 
     h1 {
+        font-size: 1.625rem;
+    }
+
+    h2 {
         font-size: 1.25rem;
     }
 }
