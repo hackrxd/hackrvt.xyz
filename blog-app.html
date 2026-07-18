@@ -5,60 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>blog | hackrVT</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="stylesheet" href="/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Silkscreen&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
-      background: #0d0d0d;
-      color: #e0e0e0;
-      padding: 2rem 1.5rem;
-      max-width: 720px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-    a { color: #7eb8f7; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    nav { margin-bottom: 2rem; font-size: 0.85rem; color: #666; }
-    nav a { color: #666; }
-    nav a:hover { color: #aaa; }
     #app { min-height: 4rem; }
 
     /* List view */
-    .blog-heading { font-size: 1.6rem; margin-bottom: 1.5rem; }
-    .post-list { list-style: none; }
-    .post-list li + li { border-top: 1px solid #1e1e1e; }
-    .post-link { display: block; padding: 1rem 0; }
-    .post-title { font-size: 1rem; font-weight: bold; color: #e0e0e0; }
-    .post-desc { margin-top: 0.3rem; color: #888; font-size: 0.875rem; }
-    .post-date { margin-top: 0.25rem; color: #555; font-size: 0.8rem; }
-    .post-link:hover .post-title { color: #7eb8f7; }
-    .post-link:hover { text-decoration: none; }
+    .blog-heading { margin-bottom: 1.5rem; }
+    .post-list { list-style: none; padding-left: 0; }
+    .post-list li + li { border-top: 1px solid var(--border); }
+    .post-link { display: block; padding: 1rem 0; text-decoration: none; }
+    .post-title {
+      font-family: 'Bricolage Grotesque', 'Atkinson Hyperlegible', sans-serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .post-desc { margin-top: 0.3rem; color: var(--muted); font-size: 0.875rem; }
+    .post-date { margin-top: 0.25rem; color: var(--muted); font-size: 0.8rem; opacity: 0.7; }
+    .post-link:hover .post-title { color: var(--lavender); }
 
     /* Post view */
-    .back-link { display: inline-block; margin-bottom: 2rem; font-size: 0.85rem; color: #666; }
-    .back-link:hover { color: #aaa; text-decoration: none; }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 2rem;
+      font-size: 0.875rem;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .back-link:hover { color: var(--peach); }
     .post-content { line-height: 1.75; }
-    .post-content h1 { font-size: 1.5rem; margin: 2rem 0 1rem; }
-    .post-content h2 { font-size: 1.25rem; margin: 1.75rem 0 0.75rem; }
-    .post-content h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; }
+    .post-content h1 { font-size: 1.625rem; margin: 2rem 0 1rem; }
+    .post-content h2 { font-size: 1.375rem; margin: 2rem 0 0.75rem; }
+    .post-content h3 { font-size: 1.125rem; margin: 1.5rem 0 0.5rem; }
     .post-content p { margin-bottom: 1rem; }
     .post-content ul, .post-content ol { padding-left: 1.5rem; margin-bottom: 1rem; }
     .post-content li { margin-bottom: 0.25rem; }
-    .post-content pre { margin: 1.25rem 0; border-radius: 6px; overflow-x: auto; }
+    .post-content pre { margin: 1.25rem 0; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; }
+    .post-content code { font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace; }
     .post-content code:not(pre code) {
-      background: #1a1a1a;
+      background: var(--panel);
       padding: 0.15em 0.35em;
-      border-radius: 3px;
+      border-radius: 4px;
       font-size: 0.875em;
     }
     .post-content blockquote {
-      border-left: 3px solid #333;
+      border-left: 3px solid var(--border);
       padding-left: 1rem;
-      color: #888;
+      color: var(--muted);
       margin: 1rem 0;
     }
-    .post-content a { color: #7eb8f7; }
-    .post-content hr { border: none; border-top: 1px solid #1e1e1e; margin: 2rem 0; }
+    .post-content hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .post-content img { max-width: 100%; border-radius: 8px; }
 
     /* GFM alerts — > [!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION] */
 .gfm-alert {
@@ -91,12 +91,19 @@
 .gfm-alert-caution   .gfm-alert-title { color: #ef4444; }
 
     /* States */
-    .status { color: #666; font-size: 0.875rem; margin-top: 1rem; }
+    .status { color: var(--muted); font-size: 0.875rem; margin-top: 1rem; }
     .error { color: #f87171; font-size: 0.875rem; margin-top: 1rem; }
   </style>
 </head>
 <body>
-  <nav><a href="/">← hackrVT</a></nav>
+  <header class="site-header">
+    <a class="site-badge" href="/">hackrVT</a>
+    <nav class="site-nav">
+      <a href="/about">about</a>
+      <a href="/blog" aria-current="page">blog</a>
+      <a href="/elsewhere">88x31s</a>
+    </nav>
+  </header>
   <div id="app"><p class="status">Loading...</p></div>
 
   <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>

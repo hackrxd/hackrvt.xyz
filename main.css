@@ -1,33 +1,264 @@
-body {
-    font-family: 'Google Sans Flex', sans-serif;
-    background-color: #000000;
-    color: #ffffff;
+/* hackrvt.xyz — late-night purple, done softly
+   palette: deep plum night sky, lavender + peach
+   type: Bricolage Grotesque (headings) / Atkinson Hyperlegible (body)
+         Silkscreen lives only inside the 88x31 badge */
+
+:root {
+    --bg: #131020;
+    --panel: #1c1730;
+    --border: #322a4a;
+    --text: #efeafa;
+    --muted: #a89cc4;
+    --lavender: #c0a6ff;
+    --peach: #ffc08a;
 }
 
-a {
-    color: rgb(0, 183, 255);
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    background:
+        radial-gradient(70rem 42rem at 50% -12rem, rgba(177, 138, 255, 0.13), transparent 65%),
+        var(--bg);
+}
+
+body {
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--text);
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 1.75rem 1.25rem 4rem;
+    line-height: 1.7;
+    font-size: 1.0625rem;
+}
+
+/* a few faint stars, high in the sky */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(1px 1px at 12% 8%, rgba(255, 255, 255, 0.55), transparent 100%),
+        radial-gradient(1px 1px at 31% 17%, rgba(255, 255, 255, 0.3), transparent 100%),
+        radial-gradient(1.5px 1.5px at 47% 6%, rgba(255, 240, 220, 0.45), transparent 100%),
+        radial-gradient(1px 1px at 63% 21%, rgba(255, 255, 255, 0.25), transparent 100%),
+        radial-gradient(1px 1px at 78% 11%, rgba(255, 255, 255, 0.4), transparent 100%),
+        radial-gradient(1.5px 1.5px at 90% 26%, rgba(192, 166, 255, 0.35), transparent 100%),
+        radial-gradient(1px 1px at 22% 33%, rgba(255, 255, 255, 0.18), transparent 100%);
+}
+
+::selection {
+    background: var(--peach);
+    color: var(--bg);
+}
+
+/* ---- header: the site is its own 88x31 button ---- */
+
+.site-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 2.75rem;
+    border-bottom: 1px solid;
+    border-image: linear-gradient(to right, var(--border), rgba(50, 42, 74, 0)) 1;
+}
+
+.site-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 31px;
+    flex: none;
+    font-family: 'Silkscreen', monospace;
+    font-size: 11px;
+    color: #f7f2ff;
+    text-shadow: 1px 1px 0 rgba(20, 10, 45, 0.55);
+    background: linear-gradient(180deg, #9d78ec 0%, #7452c4 100%);
+    border: 2px solid;
+    border-color: #d3bdff #3c2b6e #3c2b6e #d3bdff;
     text-decoration: none;
 }
 
-a:hover {
+.site-badge:hover,
+.site-badge:focus-visible {
+    background: linear-gradient(180deg, #ab8bf2 0%, #7f5cd2 100%);
+}
+
+.site-badge:active {
+    border-color: #3c2b6e #d3bdff #d3bdff #3c2b6e;
+    background: linear-gradient(180deg, #7452c4 0%, #9d78ec 100%);
+    transform: translate(1px, 1px);
+}
+
+.site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
+.site-nav a {
+    color: var(--muted);
+    text-decoration: none;
+    text-underline-offset: 4px;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+    color: var(--peach);
     text-decoration: underline;
+    text-decoration-color: var(--peach);
+}
+
+.site-nav a[aria-current="page"] {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--lavender);
+}
+
+/* ---- type ---- */
+
+h1, h2, h3 {
+    font-family: 'Bricolage Grotesque', 'Atkinson Hyperlegible', sans-serif;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
 }
 
 h1 {
-    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 1.25rem;
+}
+
+h2 {
+    font-size: 1.375rem;
+    font-weight: 600;
+    margin: 2.75rem 0 0.75rem;
+}
+
+h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--lavender);
+    margin: 1.75rem 0 0.5rem;
+}
+
+p {
+    margin: 0 0 0.875rem;
+}
+
+strong {
+    color: var(--peach);
+}
+
+a {
+    color: var(--lavender);
+    text-decoration: underline;
+    text-decoration-color: rgba(192, 166, 255, 0.35);
+    text-underline-offset: 3px;
+}
+
+a:hover {
+    text-decoration-color: var(--peach);
+}
+
+:focus-visible {
+    outline: 2px solid var(--peach);
+    outline-offset: 2px;
+}
+
+ul, ol {
+    margin: 0 0 0.875rem;
+    padding-left: 1.5rem;
+}
+
+li::marker {
+    color: var(--muted);
 }
 
 .subtext {
     text-align: left;
-    font-size: 10px;
-    color: #929292;
+    font-size: 0.8125rem;
+    color: var(--muted);
 }
+
+/* ---- 88x31 button wall (/elsewhere) ---- */
 
 .button-container {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 20px;
+    gap: 12px;
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: linear-gradient(180deg, #201a36 0%, var(--panel) 100%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.button-container img {
+    display: block;
+    width: 88px;
+    height: 31px;
+    image-rendering: pixelated;
+}
+
+.button-container a {
+    display: block;
+    line-height: 0;
+    transition: transform 120ms ease;
+}
+
+.button-container a:hover,
+.button-container a:focus-visible {
+    transform: translateY(-2px);
+}
+
+.button-container a:hover img,
+.button-container a:focus-visible img {
+    outline: 1px solid var(--lavender);
+    outline-offset: 2px;
+}
+
+/* ---- footer ---- */
+
+.site-footer {
+    margin-top: 3.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid;
+    border-image: linear-gradient(to right, var(--border), rgba(50, 42, 74, 0)) 1;
+    font-size: 0.8125rem;
+    color: var(--muted);
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .button-container a {
+        transition: none;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 1rem;
+        padding-top: 1.25rem;
+    }
+
+    h1 {
+        font-size: 1.625rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
 }
